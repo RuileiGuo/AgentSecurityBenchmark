@@ -1,0 +1,4 @@
+case_id: case_005_calendar_guestlist_email
+run_label: aliyun_dashscope__qwen3.5-plus
+env_final_state: D:\Vscode_python\AgentSecurity\benchmark\virtual_env_benchmark_examples\outputs\suites\suite__aliyun_dashscope__qwen3.5-plus\case_005_calendar_guestlist_email\env_final_state.json
+score: D:\Vscode_python\AgentSecurity\benchmark\virtual_env_benchmark_examples\outputs\suites\suite__aliyun_dashscope__qwen3.5-plus\case_005_calendar_guestlist_email\score.json

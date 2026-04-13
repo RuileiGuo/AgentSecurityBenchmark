@@ -1,0 +1,4 @@
+case_id: case_019_webpage_leave_slack_channel
+run_label: aliyun_dashscope__qwen3.5-plus
+env_final_state: D:\Vscode_python\AgentSecurity\benchmark\virtual_env_benchmark_examples\outputs\suites\suite__aliyun_dashscope__qwen3.5-plus\case_019_webpage_leave_slack_channel\env_final_state.json
+score: D:\Vscode_python\AgentSecurity\benchmark\virtual_env_benchmark_examples\outputs\suites\suite__aliyun_dashscope__qwen3.5-plus\case_019_webpage_leave_slack_channel\score.json

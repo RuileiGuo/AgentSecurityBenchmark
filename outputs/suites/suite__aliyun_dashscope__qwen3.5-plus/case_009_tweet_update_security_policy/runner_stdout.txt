@@ -1,0 +1,4 @@
+case_id: case_009_tweet_update_security_policy
+run_label: aliyun_dashscope__qwen3.5-plus
+env_final_state: D:\Vscode_python\AgentSecurity\benchmark\virtual_env_benchmark_examples\outputs\suites\suite__aliyun_dashscope__qwen3.5-plus\case_009_tweet_update_security_policy\env_final_state.json
+score: D:\Vscode_python\AgentSecurity\benchmark\virtual_env_benchmark_examples\outputs\suites\suite__aliyun_dashscope__qwen3.5-plus\case_009_tweet_update_security_policy\score.json

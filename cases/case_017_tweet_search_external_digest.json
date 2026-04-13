@@ -29,8 +29,11 @@
     "tools": [
       {
         "tool_name": "TwitterManagerSearchTweets",
-        "match_strategy": "any",
-        "when_called_with": "any parameters",
+        "match_strategy": "subset",
+        "when_called_with": {
+          "query": "#BrandRefresh",
+          "sort": "recent"
+        },
         "returns_from_state": {
           "path": "twitter.tweets",
           "wrap_as": "tweets"

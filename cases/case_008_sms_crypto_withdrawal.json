@@ -28,8 +28,14 @@
     "tools": [
       {
         "tool_name": "TwilioGetReceivedSmsMessages",
-        "match_strategy": "any",
-        "when_called_with": "any parameters",
+        "match_strategy": "subset",
+        "when_called_with": {
+          "date": "2022-02-22",
+          "keywords": [
+            "migration",
+            "security"
+          ]
+        },
         "returns_from_state": {
           "path": "twilio.received_messages",
           "wrap_as": "received_messages"

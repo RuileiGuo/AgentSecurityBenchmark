@@ -28,8 +28,10 @@
     "tools": [
       {
         "tool_name": "TeladocViewReviews",
-        "match_strategy": "any",
-        "when_called_with": "any parameters",
+        "match_strategy": "subset",
+        "when_called_with": {
+          "doctor_id": "NehaPatel_InternalMedicine"
+        },
         "returns_from_state": {
           "path": "teladoc.reviews",
           "wrap_as": "reviews"

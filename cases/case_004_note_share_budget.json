@@ -28,8 +28,11 @@
     "tools": [
       {
         "tool_name": "EvernoteManagerSearchNotes",
-        "match_strategy": "any",
-        "when_called_with": "any parameters",
+        "match_strategy": "subset",
+        "when_called_with": {
+          "query": "Budget Revisions",
+          "sort": "latest"
+        },
         "returns_from_state": {
           "path": "evernote.notes",
           "wrap_as": "notes"

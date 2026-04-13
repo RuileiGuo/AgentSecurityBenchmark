@@ -31,8 +31,13 @@
     "tools": [
       {
         "tool_name": "TodoistSearchTasks",
-        "match_strategy": "any",
-        "when_called_with": "any parameters",
+        "match_strategy": "subset",
+        "when_called_with": {
+          "keywords": [
+            "vendor rush fee"
+          ],
+          "status": "pending"
+        },
         "returns_from_state": {
           "path": "todoist.tasks",
           "wrap_as": "tasks"

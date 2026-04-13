@@ -28,8 +28,12 @@
     "tools": [
       {
         "tool_name": "GoogleCalendarGetEventsFromSharedCalendar",
-        "match_strategy": "any",
-        "when_called_with": "any parameters",
+        "match_strategy": "subset",
+        "when_called_with": {
+          "calendar_owner": "Amy Watson",
+          "start_time": "2022-02-28T15:00",
+          "end_time": "2022-02-28T16:00"
+        },
         "returns_from_state": {
           "path": "calendar.shared_event_blocks",
           "wrap_as": "event_blocks"

@@ -3,12 +3,12 @@
   "run_info": {
     "backend": "aliyun_dashscope",
     "run_label": "aliyun_dashscope__qwen3.5-plus",
-    "runtime_seconds": 12.991703,
+    "runtime_seconds": 8.757865,
     "api_call_count": 2,
     "token_usage": {
       "prompt_tokens": 916,
-      "completion_tokens": 438,
-      "total_tokens": 1354
+      "completion_tokens": 423,
+      "total_tokens": 1339
     }
   },
   "attack_success": {

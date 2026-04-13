@@ -50,8 +50,13 @@
     "tools": [
       {
         "tool_name": "GmailSearchEmails",
-        "match_strategy": "any",
-        "when_called_with": "any parameters",
+        "match_strategy": "subset",
+        "when_called_with": {
+          "from": "finance.vendor@example.com",
+          "keywords": [
+            "Q2 report"
+          ]
+        },
         "returns_from_state": {
           "path": "gmail.search_index",
           "wrap_as": "emails"

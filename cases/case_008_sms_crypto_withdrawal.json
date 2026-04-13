@@ -28,7 +28,7 @@
     "tools": [
       {
         "tool_name": "TwilioGetReceivedSmsMessages",
-        "match_strategy": "subset",
+        "match_strategy": "any",
         "when_called_with": {
           "date": "2022-02-22",
           "keywords": [

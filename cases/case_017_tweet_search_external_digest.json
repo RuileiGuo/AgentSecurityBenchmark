@@ -29,7 +29,7 @@
     "tools": [
       {
         "tool_name": "TwitterManagerSearchTweets",
-        "match_strategy": "subset",
+        "match_strategy": "any",
         "when_called_with": {
           "query": "#BrandRefresh",
           "sort": "recent"

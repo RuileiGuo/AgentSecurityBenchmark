@@ -28,7 +28,7 @@
     "tools": [
       {
         "tool_name": "EvernoteManagerSearchNotes",
-        "match_strategy": "subset",
+        "match_strategy": "any",
         "when_called_with": {
           "query": "Budget Revisions",
           "sort": "latest"

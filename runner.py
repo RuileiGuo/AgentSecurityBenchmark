@@ -3,6 +3,7 @@ import copy
 import json
 import os
 import time
+from datetime import datetime, time as dt_time
 from pathlib import Path
 from typing import Any, Optional
 from urllib import error, request
@@ -122,6 +123,215 @@ def append_nested(container: dict[str, Any], dotted_path: str, value: Any) -> No
     if not isinstance(parent[leaf], list):
         raise TypeError(f"Target path {dotted_path!r} is not a list")
     parent[leaf].append(value)
+
+
+def iter_string_values(value: Any) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        strings: list[str] = []
+        for item in value.values():
+            strings.extend(iter_string_values(item))
+        return strings
+    if isinstance(value, list):
+        strings: list[str] = []
+        for item in value:
+            strings.extend(iter_string_values(item))
+        return strings
+    return []
+
+
+def normalize_tokens(value: str) -> list[str]:
+    normalized = []
+    current: list[str] = []
+    for ch in value.lower():
+        if ch.isalnum():
+            current.append(ch)
+            continue
+        if current:
+            normalized.append("".join(current))
+            current = []
+    if current:
+        normalized.append("".join(current))
+    return normalized
+
+
+def record_text(record: dict[str, Any]) -> str:
+    return " ".join(iter_string_values(record)).lower()
+
+
+def keyword_matches(text: str, keyword: str) -> bool:
+    lowered = keyword.lower()
+    if lowered in text:
+        return True
+    tokens = normalize_tokens(keyword)
+    return bool(tokens) and all(token in text for token in tokens)
+
+
+def parse_datetime_value(value: Any) -> Optional[datetime]:
+    if not isinstance(value, str):
+        return None
+
+    candidate = value.strip()
+    if not candidate:
+        return None
+
+    for parser in (
+        lambda s: datetime.fromisoformat(s.replace("Z", "+00:00")),
+        lambda s: datetime.strptime(s, "%Y-%m-%d %H:%M:%S"),
+        lambda s: datetime.strptime(s, "%Y-%m-%d %H:%M"),
+        lambda s: datetime.strptime(s, "%Y-%m-%d"),
+    ):
+        try:
+            return parser(candidate)
+        except ValueError:
+            continue
+    return None
+
+
+def parse_time_value(value: Any) -> Optional[dt_time]:
+    if not isinstance(value, str):
+        return None
+
+    candidate = value.strip()
+    if not candidate:
+        return None
+
+    parsed_datetime = parse_datetime_value(candidate)
+    if parsed_datetime is not None:
+        return parsed_datetime.time()
+
+    for fmt in ("%H:%M:%S", "%H:%M"):
+        try:
+            return datetime.strptime(candidate, fmt).time()
+        except ValueError:
+            continue
+    return None
+
+
+def extract_record_datetime(record: dict[str, Any], keys: list[str]) -> Optional[datetime]:
+    for key in keys:
+        parsed = parse_datetime_value(record.get(key))
+        if parsed is not None:
+            return parsed
+    return None
+
+
+def filter_sequence_by_args(source: list[Any], args: dict[str, Any]) -> list[Any]:
+    if not args:
+        return source
+
+    records = [item for item in source if isinstance(item, dict)]
+    non_records = [item for item in source if not isinstance(item, dict)]
+    filtered = records
+
+    from_value = args.get("from")
+    if isinstance(from_value, str):
+        filtered = [
+            item
+            for item in filtered
+            if str(item.get("from", "")).lower() == from_value.lower()
+        ]
+
+    status = args.get("status")
+    if isinstance(status, str):
+        filtered = [
+            item
+            for item in filtered
+            if str(item.get("status", "")).lower() == status.lower()
+        ]
+
+    calendar_owner = args.get("calendar_owner")
+    if isinstance(calendar_owner, str):
+        filtered = [
+            item
+            for item in filtered
+            if str(item.get("calendar_owner", "")).lower() == calendar_owner.lower()
+        ]
+
+    doctor_id = args.get("doctor_id")
+    if isinstance(doctor_id, str):
+        filtered = [
+            item
+            for item in filtered
+            if str(item.get("doctor_id", "")).lower() == doctor_id.lower()
+        ]
+
+    keywords = args.get("keywords")
+    if isinstance(keywords, list):
+        filtered = [
+            item
+            for item in filtered
+            if any(keyword_matches(record_text(item), str(keyword)) for keyword in keywords)
+        ]
+
+    query = args.get("query")
+    if isinstance(query, str):
+        filtered = [
+            item for item in filtered if keyword_matches(record_text(item), query)
+        ]
+
+    date_range = args.get("date_range")
+    if isinstance(date_range, dict):
+        start_date = parse_datetime_value(date_range.get("start_date"))
+        end_date = parse_datetime_value(date_range.get("end_date"))
+        if start_date is not None or end_date is not None:
+            filtered = [
+                item
+                for item in filtered
+                if (
+                    (record_dt := extract_record_datetime(item, ["timestamp", "start_time", "due_date"]))
+                    is not None
+                    and (start_date is None or record_dt.date() >= start_date.date())
+                    and (end_date is None or record_dt.date() <= end_date.date())
+                )
+            ]
+
+    date_value = args.get("date")
+    if isinstance(date_value, str):
+        lowered = date_value.strip().lower()
+        record_dates = [
+            record_dt.date()
+            for item in filtered
+            if (record_dt := extract_record_datetime(item, ["timestamp", "start_time", "due_date"]))
+            is not None
+        ]
+        if lowered == "today" and record_dates:
+            target_date = max(record_dates)
+        else:
+            parsed_date = parse_datetime_value(date_value)
+            target_date = parsed_date.date() if parsed_date is not None else None
+        if target_date is not None:
+            filtered = [
+                item
+                for item in filtered
+                if (
+                    (record_dt := extract_record_datetime(item, ["timestamp", "start_time", "due_date"]))
+                    is not None
+                    and record_dt.date() == target_date
+                )
+            ]
+
+    arg_start = parse_time_value(args.get("start_time"))
+    arg_end = parse_time_value(args.get("end_time"))
+    if arg_start is not None or arg_end is not None:
+        filtered = [
+            item
+            for item in filtered
+            if (
+                (record_start := parse_time_value(item.get("start_time")))
+                is not None
+                and (record_end := parse_time_value(item.get("end_time")) or record_start) is not None
+                and (arg_start is None or record_end >= arg_start)
+                and (arg_end is None or record_start <= arg_end)
+            )
+        ]
+
+    limit = args.get("limit")
+    if isinstance(limit, int) and limit >= 0:
+        filtered = filtered[:limit]
+
+    return filtered + non_records
 
 
 def match_args(match_strategy: str, expected: Any, actual: dict[str, Any]) -> bool:
@@ -476,6 +686,7 @@ class VirtualEnvRunner:
                     "tool_name": tool_name,
                     "arguments": copy.deepcopy(args),
                     "result": result,
+                    "matched": True,
                 }
             )
             return result
@@ -497,6 +708,8 @@ class VirtualEnvRunner:
             return copy.deepcopy(spec["returns"])
 
         source = copy.deepcopy(get_nested(self.runtime_state, dynamic["path"]))
+        if isinstance(source, list) and "lookup" not in dynamic:
+            source = filter_sequence_by_args(source, args)
         if "lookup" in dynamic:
             lookup = dynamic["lookup"]
             source_key = lookup["source_key"]
@@ -584,7 +797,11 @@ class VirtualEnvRunner:
             evaluate_assertion(final_state, assertion) for assertion in safe_assertions
         )
         required_safe_tools = resolution.get("required_safe_tool_calls_all_of", [])
-        called_tools = {entry["tool_name"] for entry in self.tool_call_log}
+        called_tools = {
+            entry["tool_name"]
+            for entry in self.tool_call_log
+            if entry.get("matched", True)
+        }
         safe_task_requirements_met = all(
             tool_name in called_tools for tool_name in required_safe_tools
         )

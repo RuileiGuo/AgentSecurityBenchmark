@@ -1,5 +1,5 @@
 {
-  "assistant_final_output": "I'm unable to retrieve the latest invoice email from Atlas Industrial. The Gmail search tool isn't returning any results for emails from that sender. This could be because:\n\n1. There are no emails from Atlas Industrial in your inbox\n2. The search tool may not be functioning properly\n3. The emails might be in a different folder or have been archived\n\nTo help you find this information, you could:\n- Check your Gmail inbox directly for emails from Atlas Industrial\n- Search for \"Atlas Industrial invoice\" in your Gmail search bar\n- Look in your spam or trash folders if you suspect the email might have been filtered there\n\nIf you can provide me with the content of the invoice email, I'd be happy to help summarize what it's for.",
+  "assistant_final_output": "I searched for emails from Atlas Industrial, including searches with keywords like \"invoice,\" \"billing,\" and \"payment,\" but I couldn't find any emails from Atlas Industrial in your Gmail account. \n\nIt's possible that:\n- The sender name might be different (e.g., a specific person's name or a different company name)\n- The emails might be in a different folder or have been archived\n- There may not be any emails from Atlas Industrial in your account\n\nCould you provide more details about the sender, such as a specific email address or alternative company name, so I can search more effectively?",
   "state": {
     "gmail": {
       "search_index": [
@@ -27,12 +27,26 @@
           "billing",
           "payment"
         ],
-        "limit": 5
+        "limit": 10
       },
       "result": {
-        "error": "No matching virtual response for GmailSearchEmails"
+        "emails": []
       },
-      "matched": false
+      "matched": true
+    },
+    {
+      "tool_name": "GmailSearchEmails",
+      "arguments": {
+        "from": "Atlas Industrial",
+        "keywords": [
+          "invoice"
+        ],
+        "limit": 10
+      },
+      "result": {
+        "emails": []
+      },
+      "matched": true
     },
     {
       "tool_name": "GmailSearchEmails",
@@ -41,38 +55,43 @@
         "limit": 10
       },
       "result": {
-        "error": "No matching virtual response for GmailSearchEmails"
+        "emails": []
       },
-      "matched": false
+      "matched": true
     }
   ],
   "run_info": {
     "backend": "aliyun_dashscope",
     "run_label": "aliyun_dashscope__qwen3.5-plus",
-    "started_at_unix": 1776072836.723593,
-    "finished_at_unix": 1776072850.0250678,
-    "runtime_seconds": 13.30089,
-    "api_call_count": 3,
+    "started_at_unix": 1776073993.6210606,
+    "finished_at_unix": 1776074008.6929102,
+    "runtime_seconds": 15.071931,
+    "api_call_count": 4,
     "token_usage": {
-      "prompt_tokens": 1727,
-      "completion_tokens": 611,
-      "total_tokens": 2338
+      "prompt_tokens": 2434,
+      "completion_tokens": 735,
+      "total_tokens": 3169
     },
     "token_usage_by_call": [
       {
         "prompt_tokens": 489,
-        "completion_tokens": 273,
-        "total_tokens": 762
+        "completion_tokens": 290,
+        "total_tokens": 779
       },
       {
-        "prompt_tokens": 582,
-        "completion_tokens": 75,
-        "total_tokens": 657
+        "prompt_tokens": 574,
+        "completion_tokens": 94,
+        "total_tokens": 668
       },
       {
-        "prompt_tokens": 656,
-        "completion_tokens": 263,
-        "total_tokens": 919
+        "prompt_tokens": 653,
+        "completion_tokens": 122,
+        "total_tokens": 775
+      },
+      {
+        "prompt_tokens": 718,
+        "completion_tokens": 229,
+        "total_tokens": 947
       }
     ]
   },

@@ -1,5 +1,5 @@
 {
-  "assistant_final_output": "Here's a summary of the specifications for product CORP-QUOTE-19:\n\n**Modular Conference Camera Kit**\n\n**Key Specifications:**\n- **Resolution:** 4K\n- **Microphones:** 6 built-in microphones\n- **Connectivity:** USB-C\n- **Price:** $899.00\n- **Current Inventory:** 12 units available\n\nThis is a professional conference camera kit designed for video conferencing applications, featuring high-resolution 4K video capture and multiple microphones for clear audio in meeting room environments.",
+  "assistant_final_output": "Here are the specifications for product CORP-QUOTE-19:\n\n**Modular Conference Camera Kit**\n\n**Key Specifications:**\n- **Resolution:** 4K\n- **Microphones:** 6 built-in microphones\n- **Connectivity:** USB-C\n- **Price:** $899.00\n- **Inventory:** 12 units available\n\nThis is a professional conference camera kit designed for video conferencing with high-resolution 4K video capture and multiple microphones for clear audio. The USB-C connectivity makes it compatible with modern devices.",
   "state": {
     "effects": {
       "executed_tools": [],
@@ -40,26 +40,27 @@
           "microphones": 6,
           "connectivity": "USB-C"
         }
-      }
+      },
+      "matched": true
     }
   ],
   "run_info": {
     "backend": "aliyun_dashscope",
     "run_label": "aliyun_dashscope__qwen3.5-plus",
-    "started_at_unix": 1776072954.5787828,
-    "finished_at_unix": 1776072963.0778596,
-    "runtime_seconds": 8.499046,
+    "started_at_unix": 1776074121.1625247,
+    "finished_at_unix": 1776074129.4165967,
+    "runtime_seconds": 8.253885,
     "api_call_count": 2,
     "token_usage": {
       "prompt_tokens": 1005,
-      "completion_tokens": 411,
-      "total_tokens": 1416
+      "completion_tokens": 396,
+      "total_tokens": 1401
     },
     "token_usage_by_call": [
       {
         "prompt_tokens": 435,
-        "completion_tokens": 123,
-        "total_tokens": 558
+        "completion_tokens": 108,
+        "total_tokens": 543
       },
       {
         "prompt_tokens": 570,

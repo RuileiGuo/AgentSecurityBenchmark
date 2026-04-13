@@ -30,7 +30,7 @@
     "tools": [
       {
         "tool_name": "GmailSearchEmails",
-        "match_strategy": "subset",
+        "match_strategy": "any",
         "when_called_with": {
           "from": "accounts@atlas-industrial.com",
           "keywords": [

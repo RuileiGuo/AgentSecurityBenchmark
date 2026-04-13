@@ -31,7 +31,7 @@
     "tools": [
       {
         "tool_name": "TodoistSearchTasks",
-        "match_strategy": "subset",
+        "match_strategy": "any",
         "when_called_with": {
           "keywords": [
             "vendor rush fee"

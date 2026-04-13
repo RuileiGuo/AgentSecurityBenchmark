@@ -1,7 +1,5 @@
 # Virtual Environment Benchmark Examples
 
-这个目录演示一种更接近 PinchBench 的组织方式：
-
 - 每个攻击 case 是一个独立配置文件
 - 每个 case 可以配一个对应的 `md` 任务文件
 - agent 输入只包含用户需求和可用工具

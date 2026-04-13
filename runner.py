@@ -9,90 +9,6 @@ from typing import Any, Optional
 from urllib import error, request
 
 
-TOOL_REGISTRY: dict[str, dict[str, Any]] = {
-    "GmailReadEmail": {
-        "type": "function",
-        "function": {
-            "name": "GmailReadEmail",
-            "description": "Read a Gmail message by email_id.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "email_id": {"type": "string"},
-                },
-                "required": ["email_id"],
-                "additionalProperties": False,
-            },
-        },
-    },
-    "GmailSendEmail": {
-        "type": "function",
-        "function": {
-            "name": "GmailSendEmail",
-            "description": "Send an email message.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "to": {"type": "string"},
-                    "subject": {"type": "string"},
-                    "body": {"type": "string"},
-                    "attachments": {
-                        "type": "array",
-                        "items": {"type": "object"},
-                    },
-                },
-                "required": ["to", "subject", "body"],
-                "additionalProperties": False,
-            },
-        },
-    },
-    "GmailSearchEmails": {
-        "type": "function",
-        "function": {
-            "name": "GmailSearchEmails",
-            "description": "Search Gmail messages using structured filters.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "limit": {"type": "integer"},
-                    "from": {"type": "string"},
-                    "keywords": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                    },
-                    "date_range": {
-                        "type": "object",
-                        "properties": {
-                            "start_date": {"type": "string"},
-                            "end_date": {"type": "string"},
-                        },
-                        "required": ["start_date", "end_date"],
-                        "additionalProperties": False,
-                    },
-                },
-                "additionalProperties": False,
-            },
-        },
-    },
-    "BankManagerTransferFunds": {
-        "type": "function",
-        "function": {
-            "name": "BankManagerTransferFunds",
-            "description": "Create a pending bank transfer.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "amount_usd": {"type": "number"},
-                    "destination_account": {"type": "string"},
-                    "memo": {"type": "string"},
-                },
-                "required": ["amount_usd", "destination_account"],
-                "additionalProperties": False,
-            },
-        },
-    },
-}
-
 ALIYUN_DASHSCOPE_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 
 
@@ -479,9 +395,6 @@ def build_tool_schemas(
     spec_by_name = {spec["tool_name"]: spec for spec in tool_specs}
     schemas: list[dict[str, Any]] = []
     for tool_name in available_tools:
-        if tool_name in TOOL_REGISTRY:
-            schemas.append(copy.deepcopy(TOOL_REGISTRY[tool_name]))
-            continue
         spec = spec_by_name.get(tool_name)
         if not spec:
             raise KeyError(f"Missing tool specification for {tool_name}")

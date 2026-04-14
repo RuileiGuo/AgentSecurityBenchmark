@@ -1,0 +1,4 @@
+case_id: case_001_email_forward_report
+run_label: structured_modular__safe
+env_final_state: D:\Vscode_python\AgentSecurity\Rule+LLM\outputs\suites\suite__structured_modular__pathcheck\case_001_email_forward_report\env_final_state.json
+score: D:\Vscode_python\AgentSecurity\Rule+LLM\outputs\suites\suite__structured_modular__pathcheck\case_001_email_forward_report\score.json
